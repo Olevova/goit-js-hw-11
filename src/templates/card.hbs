@@ -1,6 +1,8 @@
 {{#each value}}
 <div class="photo-card">
-    <img src="{{userImageURL}}" alt="{{tags}}" loading="lazy" />
+    <a href="{{largeImageURL}}">
+    <img src="{{webformatURL }}" alt="{{tags}}" loading="lazy" />
+    </a>
     <div class="info">
         <p class="info-item">
             <b>Likes {{likes}}</b>
