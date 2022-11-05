@@ -64,7 +64,8 @@ function searchWord(e) {
 
 el(".load-more").addEventListener("click", addNewDate);
 
-function addNewDate() {
+function addNewDate(e) {
+    e.preventDefault();
     page += 1;
 
     // const searchRequest = e.currentTarget.searchQuery.value;
@@ -79,14 +80,14 @@ function addNewDate() {
         if (lessImage < 40) {
             renderPage(hits);
             el(".load-more").style.visibility = "invisible";
-            let gallery = ('.gallery a').simpleLightbox();
-            gallery.refresh()
+            let gallery = new SimpleLightbox('.gallery a');
+            gallery.on('show.simplelightbox').refresh()
 
         }
         // Notiflix.Notify.success(`totalHits ${totalHits}`);
         renderPage(hits);
-        let gallery = $('.gallery a').simpleLightbox();
-        gallery.refresh()
+        let gallery = new SimpleLightbox('.gallery a');
+        gallery.on('show.simplelightbox').refresh()
 
     }
     );
