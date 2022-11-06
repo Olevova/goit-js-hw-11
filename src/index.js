@@ -3,14 +3,14 @@ import cardHbs from "./templates/card.hbs";
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import Notiflix from 'notiflix';
-
 // console.log(cardHbs);
 
 const el = some => document.querySelector(some) 
 
+
 const API_KEY = "31047925-06104412e98efcf2f7c7fbf45";
 const SITE = 'https://pixabay.com/api/' 
-const PAGESEARCH = 200;
+const PAGESEARCH = 40;
 
 let page = 1;
 let searchRequest = '';
@@ -42,6 +42,7 @@ function searchWord(e) {
         totalCardImg = totalHits;
          if (hits < 1) {
              Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.');
+            el(".load-more").style.visibility = "hidden";
              return
         }
         Notiflix.Notify.success(`totalHits ${totalHits}`);
@@ -65,6 +66,7 @@ function addNewDate(e) {
         Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
         if (totalCardImg < 1) {
             Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.');
+            el(".load-more").style.visibility = "hidden";
             return
         }
         console.log(totalCardImg);
