@@ -10,7 +10,7 @@ const el = some => document.querySelector(some)
 
 const API_KEY = "31047925-06104412e98efcf2f7c7fbf45";
 const SITE = 'https://pixabay.com/api/' 
-const PAGESEARCH = 40;
+const PAGESEARCH = 200;
 
 let page = 1;
 let searchRequest = '';
@@ -47,8 +47,8 @@ function searchWord(e) {
         Notiflix.Notify.success(`totalHits ${totalHits}`);
         renderPage(hits);
         el(".load-more").style.visibility = "visible";
-        let gallery = new SimpleLightbox('.gallery a');
-        gallery.on('show.simplelightbox')
+        new SimpleLightbox('.gallery a');
+        // gallery.on('show.simplelightbox')
 
     }
     );
@@ -72,14 +72,14 @@ function addNewDate(e) {
             renderPage(hits);
             Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
             el(".load-more").style.visibility = "hidden";
-            let gallery = new SimpleLightbox('.gallery a');
-            gallery.on('show.simplelightbox').refresh()
+            new SimpleLightbox('.gallery a');
+            // gallery.on('show.simplelightbox').refresh()
             console.log(gallery);
         }
         // Notiflix.Notify.success(`totalHits ${totalHits}`);
         renderPage(hits);
-        let gallery = new SimpleLightbox('.gallery a');
-        gallery.on('show.simplelightbox').refresh()
+        new SimpleLightbox('.gallery a');
+        // gallery.on('show.simplelightbox').refresh()
 
     }
     );
