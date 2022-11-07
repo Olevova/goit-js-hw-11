@@ -1,26 +1,15 @@
-import axios from 'axios';
 import cardHbs from "./templates/card.hbs";
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import Notiflix from 'notiflix';
+import {PAGESEARCH,myApiRequest} from "./js/myfetch.js"
 // console.log(cardHbs);
 
 const el = some => document.querySelector(some) 
 
-
-const API_KEY = "31047925-06104412e98efcf2f7c7fbf45";
-const SITE = 'https://pixabay.com/api/' 
-const PAGESEARCH = 40;
-
 let page = 1;
 let searchRequest = '';
 let totalCardImg = 0;
-
-// функція пошуку та повернення результатів
-async function myApiRequest(v) {
-    const resFind = await axios.get(`${SITE}?key=${API_KEY}&q=${v}&photo&horizontal&safesearch=true&per_page=${PAGESEARCH}&page=${page}`)
-    return resFind.data
-}
 
 
 // функція малювання сторінки
@@ -29,16 +18,17 @@ function renderPage(value) {
     el(".gallery").insertAdjacentHTML("beforeend", allImage);
 }
 
+// вішаємо подію на форму пошуку
 
 el("#search-form").addEventListener("submit", searchWord);
 
+// функція для пошуку по слову
 function searchWord(e) {
     e.preventDefault();
     el(".gallery").innerHTML = "";
     page = 1
     searchRequest = e.currentTarget.searchQuery.value;
-    // console.log(myApiRequest(searchRequest));
-    myApiRequest(searchRequest).then(({ hits, totalHits }) => {
+    myApiRequest(searchRequest, page).then(({ hits, totalHits }) => {
         totalCardImg = totalHits;
          if (hits < 1) {
              Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.');
@@ -49,40 +39,35 @@ function searchWord(e) {
         renderPage(hits);
         el(".load-more").style.visibility = "visible";
         new SimpleLightbox('.gallery a');
-        // gallery.on('show.simplelightbox')
-
     }
     );
     
 }
 
+// вішаємо подію на кнопку пошуку
 el(".load-more").addEventListener("click", addNewDate);
 
+// функція додавання картинок по кліку
 function addNewDate(e) {
     e.preventDefault();
     page += 1;
     totalCardImg -= PAGESEARCH;
-    myApiRequest(searchRequest).then(({ hits, totalHits }) => {
+    myApiRequest(searchRequest,page).then(({ hits, totalHits }) => {
         Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
         if (totalCardImg < 1) {
             Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.');
             el(".load-more").style.visibility = "hidden";
             return
         }
-        console.log(totalCardImg);
         if (totalCardImg < PAGESEARCH) {
             renderPage(hits);
             Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
             el(".load-more").style.visibility = "hidden";
             new SimpleLightbox('.gallery a');
-            // gallery.on('show.simplelightbox').refresh()
             console.log(gallery);
         }
-        // Notiflix.Notify.success(`totalHits ${totalHits}`);
         renderPage(hits);
         new SimpleLightbox('.gallery a');
-        // gallery.on('show.simplelightbox').refresh()
-
     }
     );
 }
